@@ -4,7 +4,417 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sistema de Verificação de Equipamentos - GrupoGps - Mecanizada</title>
-  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Estilo CSS -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 10px;
+    }
+    
+    .header {
+      background-color: #0056b3;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px 8px 0 0;
+      margin-bottom: 15px;
+    }
+    
+    .header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+    
+    .header p {
+      font-size: 14px;
+      margin: 5px 0 0;
+    }
+    
+    .company-branding {
+      margin-bottom: 5px;
+    }
+    
+    .company-branding span {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .summary-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 15px;
+      flex: 1 1 calc(50% - 10px);
+      min-width: 140px;
+    }
+    
+    .card-title {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+    
+    .card-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #0056b3;
+    }
+    
+    .progress-value {
+      display: flex;
+      align-items: center;
+    }
+    
+    .progress-bar {
+      flex-grow: 1;
+      height: 8px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      margin-right: 8px;
+      overflow: hidden;
+    }
+    
+    .progress-bar-fill {
+      height: 100%;
+      background-color: #28a745;
+      width: 0%;
+    }
+    
+    .section {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .section-title {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    
+    th {
+      background-color: #f5f5f5;
+      text-align: left;
+      padding: 8px;
+      border-bottom: 2px solid #ddd;
+      color: #333;
+    }
+    
+    td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .status-verified {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .status-pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    .search-container {
+      margin-bottom: 15px;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .filter-container {
+      display: flex;
+      margin-bottom: 15px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      white-space: nowrap;
+      -ms-overflow-style: none;
+    }
+    
+    .filter-container::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .filter-item {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+      padding: 5px 10px;
+      margin-right: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    
+    .filter-item.active {
+      background-color: #0056b3;
+      color: white;
+      border-color: #0056b3;
+    }
+    
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 15px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .tab {
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    
+    .tab.active {
+      border-bottom: 2px solid #0056b3;
+      color: #0056b3;
+      font-weight: bold;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 10px;
+      color: #777;
+      font-size: 12px;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: #0056b3;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin: 5px 0;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .btn:hover {
+      background-color: #003d7a;
+    }
+    
+    .btn-success {
+      background-color: #28a745;
+    }
+    
+    .btn-success:hover {
+      background-color: #218838;
+    }
+    
+    .btn-full {
+      display: block;
+      width: 100%;
+    }
+    
+    .btn-new {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #28a745;
+      color: white;
+      text-align: center;
+      line-height: 56px;
+      font-size: 24px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+      z-index: 100;
+    }
+    
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 8px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: none;
+      font-size: 14px;
+    }
+    
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 8px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: none;
+      font-size: 14px;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 15px;
+      font-style: italic;
+      color: #777;
+      font-size: 14px;
+    }
+    
+    /* Estilos específicos para o formulário */
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .form-check {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    
+    .form-check label {
+      margin: 0 0 0 5px;
+      font-weight: normal;
+    }
+    
+    .form-steps-container {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .form-steps {
+      margin-bottom: 10px;
+    }
+    
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    
+    .form-required {
+      color: #dc3545;
+      margin-left: 2px;
+    }
+    
+    .form-item {
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .form-item-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    
+    .developer-credit {
+      font-size: 10px;
+      color: #999;
+      margin-top: 3px;
+    }
+    
+    /* Responsividade para tabelas em dispositivos móveis */
+    @media (max-width: 600px) {
+      .responsive-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .card {
+        flex: 1 1 100%;
+      }
+      
+      .header h1 {
+        font-size: 18px;
+      }
+      
+      .btn {
+        padding: 10px;
+        font-size: 16px;
+      }
+      
+      th, td {
+        padding: 6px;
+        font-size: 12px;
+      }
+      
+      .form-group label, .form-control {
+        font-size: 16px;
+      }
+      
+      .form-check label {
+        font-size: 16px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -121,6 +531,45 @@
     
     <!-- Conteúdo da tab Relatórios -->
     <div class="tab-content" id="tab-reports">
+      <div class="section" id="form-totals">
+        <h2 class="section-title">Definir Totais de Equipamentos</h2>
+        <p style="font-size: 14px;">Configure a quantidade total de equipamentos por tipo.</p>
+        
+        <form id="totals-form">
+          <div class="form-group">
+            <label for="total-poliguindaste">Poliguindaste</label>
+            <input type="number" class="form-control" id="total-poliguindaste" min="0" value="0">
+          </div>
+          
+          <div class="form-group">
+            <label for="total-vacuo">Vácuo</label>
+            <input type="number" class="form-control" id="total-vacuo" min="0" value="0">
+          </div>
+          
+          <div class="form-group">
+            <label for="total-hipervacuo">Hipervácuo</label>
+            <input type="number" class="form-control" id="total-hipervacuo" min="0" value="0">
+          </div>
+          
+          <div class="form-group">
+            <label for="total-alta-pressao">Alta pressão</label>
+            <input type="number" class="form-control" id="total-alta-pressao" min="0" value="0">
+          </div>
+          
+          <div class="form-group">
+            <label for="total-bomba">Bomba sobre camionete</label>
+            <input type="number" class="form-control" id="total-bomba" min="0" value="0">
+          </div>
+          
+          <div class="form-group">
+            <label for="total-aspirador">Aspirador</label>
+            <input type="number" class="form-control" id="total-aspirador" min="0" value="0">
+          </div>
+          
+          <button type="submit" class="btn btn-success btn-full">Atualizar Totais</button>
+        </form>
+      </div>
+      
       <div class="section">
         <h2 class="section-title">Exportar Relatórios</h2>
         <p style="font-size: 14px;">Baixe os dados para análise detalhada.</p>
@@ -202,7 +651,558 @@
     </div>
   </div>
   
-  <!-- Script JavaScript -->
-  <script src="js/app.js"></script>
+  <!-- Script JavaScript modificado para usar APIs em vez de google.script.run -->
+  <script>
+    // Configuração da URL da API (URL do seu Google Script Web App publicado)
+    const API_URL = 'https://script.google.com/macros/s/ADICIONE_SEU_ID_DE_IMPLANTAÇÃO_AQUI/exec';
+    
+    // Variáveis globais para armazenar os dados
+    let allEquipments = [];
+    let allReports = [];
+    let currentFilter = 'all';
+    let searchTerm = '';
+    let verificacaoItens = []; // Será carregado do servidor
+    
+    // Chamada de API genérica
+    async function callAPI(action, data = {}) {
+      try {
+        const payload = {
+          action: action,
+          ...data
+        };
+        
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`API respondeu com status ${response.status}`);
+        }
+        
+        return await response.json();
+      } catch (error) {
+        console.error(`Erro na chamada API (${action}):`, error);
+        throw error;
+      }
+    }
+    
+    // Função que será executada quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+      // Carregar itens de verificação do servidor
+      callAPI('getVerificacaoItens')
+        .then(itens => {
+          verificacaoItens = itens;
+          console.log("Itens de verificação carregados:", verificacaoItens.length);
+        })
+        .catch(error => {
+          console.error("Erro ao carregar itens de verificação:", error);
+          showError("Erro ao carregar itens de verificação. Por favor, atualize a página.");
+        });
+        
+      loadDashboardData();
+      setupEventListeners();
+      
+      // Define a data de hoje como padrão no campo de data
+      document.getElementById('verification-date').valueAsDate = new Date();
+    });
+    
+    // Configura os manipuladores de eventos
+    function setupEventListeners() {
+      // Navegação entre tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          
+          this.classList.add('active');
+          const tabId = 'tab-' + this.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+      
+      // Filtros de equipamentos
+      document.querySelectorAll('.filter-item').forEach(filter => {
+        filter.addEventListener('click', function() {
+          document.querySelectorAll('.filter-item').forEach(f => f.classList.remove('active'));
+          this.classList.add('active');
+          
+          currentFilter = this.getAttribute('data-filter');
+          updateEquipmentsTable();
+        });
+      });
+      
+      // Busca de equipamentos
+      document.getElementById('search-input').addEventListener('input', function() {
+        searchTerm = this.value;
+        updateEquipmentsTable();
+      });
+      
+      // Botões de exportação
+      document.getElementById('export-excel').addEventListener('click', function() {
+        exportData('excel');
+      });
+      
+      document.getElementById('export-pdf').addEventListener('click', function() {
+        exportData('pdf');
+      });
+      
+      // Botão de novo registro
+      document.getElementById('new-verification').addEventListener('click', function() {
+        document.getElementById('form-overlay').style.display = 'block';
+        document.getElementById('form-step-1').style.display = 'block';
+        document.getElementById('form-step-2').style.display = 'none';
+        document.getElementById('verification-form').reset();
+      });
+      
+      // Cancelar formulário
+      document.getElementById('cancel-form').addEventListener('click', function() {
+        document.getElementById('form-overlay').style.display = 'none';
+      });
+      
+      // Fechar formulário clicando fora dele
+      document.getElementById('form-overlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.style.display = 'none';
+        }
+      });
+      
+      // Botão próximo do formulário
+      document.getElementById('next-step-1').addEventListener('click', function() {
+        // Validar campos obrigatórios
+        const equipmentId = document.getElementById('equipment-id').value;
+        const equipmentType = document.getElementById('equipment-type').value;
+        const responsibleName = document.getElementById('responsible-name').value;
+        const verificationDate = document.getElementById('verification-date').value;
+        
+        if (!equipmentId || !equipmentType || !responsibleName || !verificationDate) {
+          showError('Por favor, preencha todos os campos obrigatórios.');
+          return;
+        }
+        
+        // Verifica se o equipamento já foi verificado
+        verificarEquipamento(equipmentId);
+      });
+      
+      // Botão voltar do formulário
+      document.getElementById('prev-step-2').addEventListener('click', function() {
+        document.getElementById('form-step-1').style.display = 'block';
+        document.getElementById('form-step-2').style.display = 'none';
+      });
+      
+      // Mudança no tipo de equipamento
+      document.getElementById('equipment-type').addEventListener('change', function() {
+        if (this.value) {
+          // Trava o campo após seleção
+          this.disabled = true;
+          
+          // Cria botão para desbloquear se necessário
+          const parentElement = this.parentElement;
+          if (!document.getElementById('unlock-select')) {
+            const unlockButton = document.createElement('button');
+            unlockButton.id = 'unlock-select';
+            unlockButton.type = 'button';
+            unlockButton.className = 'btn btn-sm';
+            unlockButton.textContent = 'Desbloquear';
+            unlockButton.style.marginLeft = '10px';
+            unlockButton.style.fontSize = '12px';
+            
+            unlockButton.addEventListener('click', function() {
+              document.getElementById('equipment-type').disabled = false;
+              this.remove();
+            });
+            
+            parentElement.appendChild(unlockButton);
+          }
+          
+          gerarItensVerificacao(this.value);
+        }
+      });
+      
+      // Adiciona evento para resetar o travamento quando o formulário é fechado
+      document.getElementById('cancel-form').addEventListener('click', function() {
+        document.getElementById('equipment-type').disabled = false;
+        const unlockButton = document.getElementById('unlock-select');
+        if (unlockButton) unlockButton.remove();
+      });
+      
+      // Envio do formulário
+      document.getElementById('verification-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Habilita o select para permitir o envio dos dados
+        document.getElementById('equipment-type').disabled = false;
+        
+        // Coletar todos os dados do formulário
+        const formData = {
+          equipmentId: document.getElementById('equipment-id').value,
+          equipmentType: document.getElementById('equipment-type').value,
+          responsibleName: document.getElementById('responsible-name').value,
+          verificationDate: document.getElementById('verification-date').value,
+          observations: document.getElementById('observations').value,
+          items: {}
+        };
+        
+        // Verificar se todos os itens estão respondidos
+        const tipoEquipamento = formData.equipmentType;
+        const itensAplicaveis = verificacaoItens.filter(item => item.aplicaveis[tipoEquipamento]);
+        
+        for (const item of itensAplicaveis) {
+          const radioButtons = document.querySelectorAll(`input[name="${item.id}"]:checked`);
+          if (radioButtons.length === 0) {
+            showError(`Por favor, responda todos os itens de verificação.`);
+            return;
+          }
+          formData.items[item.id] = document.querySelector(`input[name="${item.id}"]:checked`).value;
+        }
+        
+        // Enviar dados para o servidor
+        enviarVerificacao(formData);
+      });
+      
+      // Formulário de totais
+      document.getElementById('totals-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const totaisPorTipo = {
+          'Poliguindaste': Number(document.getElementById('total-poliguindaste').value) || 0,
+          'Vácuo': Number(document.getElementById('total-vacuo').value) || 0,
+          'Hipervácuo': Number(document.getElementById('total-hipervacuo').value) || 0,
+          'Alta pressão': Number(document.getElementById('total-alta-pressao').value) || 0,
+          'Bomba sobre camionete': Number(document.getElementById('total-bomba').value) || 0,
+          'Aspirador': Number(document.getElementById('total-aspirador').value) || 0
+        };
+        
+        atualizarTotaisEquipamentos(totaisPorTipo);
+      });
+    }
+    
+    // Verifica se o equipamento já foi verificado
+    function verificarEquipamento(equipmentId) {
+      callAPI('verificarEquipamento', { id: equipmentId })
+        .then(result => {
+          if (result === "OK") {
+            // Equipamento não existe ou não foi verificado, continua para a próxima etapa
+            document.getElementById('form-step-1').style.display = 'none';
+            document.getElementById('form-step-2').style.display = 'block';
+            gerarItensVerificacao(document.getElementById('equipment-type').value);
+          } else {
+            // Equipamento já foi verificado, mostra mensagem
+            showError(result);
+          }
+        })
+        .catch(error => {
+          showError('Erro ao verificar equipamento: ' + error);
+        });
+    }
+    
+    // Gera os campos de verificação com base no tipo de equipamento
+    function gerarItensVerificacao(tipoEquipamento) {
+      const container = document.getElementById('dynamic-verification-items');
+      container.innerHTML = '';
+      
+      if (!tipoEquipamento) {
+        return;
+      }
+      
+      if (!verificacaoItens || verificacaoItens.length === 0) {
+        container.innerHTML = '<div class="loading">Carregando itens de verificação...</div>';
+        
+        // Tentar carregar os itens novamente
+        callAPI('getVerificacaoItens')
+          .then(itens => {
+            verificacaoItens = itens;
+            gerarItensVerificacao(tipoEquipamento); // Chamar a função novamente após carregar
+          })
+          .catch(error => {
+            container.innerHTML = '<div class="error-message">Erro ao carregar itens. Por favor, recarregue a página.</div>';
+          });
+        
+        return;
+      }
+      
+      // Filtra os itens aplicáveis ao tipo de equipamento selecionado
+      const itensAplicaveis = verificacaoItens.filter(item => item.aplicaveis[tipoEquipamento]);
+      
+      if (itensAplicaveis.length === 0) {
+        container.innerHTML = '<div class="form-item">Nenhum item de verificação aplicável para este tipo de equipamento.</div>';
+        return;
+      }
+      
+      // Cria os elementos de formulário para cada item
+      itensAplicaveis.forEach(item => {
+        const formItem = document.createElement('div');
+        formItem.className = 'form-item';
+        
+        const title = document.createElement('div');
+        title.className = 'form-item-title';
+        title.textContent = item.titulo;
+        formItem.appendChild(title);
+        
+        // Opções de resposta com a opção "Responsabilidade Servitec"
+        const opcoes = ['Conforme', 'Não Conforme', 'Não Aplicável', 'Responsabilidade Servitec'];
+        opcoes.forEach((opcao, index) => {
+          const formCheck = document.createElement('div');
+          formCheck.className = 'form-check';
+          
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.id = `${item.id}-${index}`;
+          input.name = item.id;
+          input.value = opcao;
+          
+          const label = document.createElement('label');
+          label.setAttribute('for', `${item.id}-${index}`);
+          label.textContent = opcao;
+          
+          formCheck.appendChild(input);
+          formCheck.appendChild(label);
+          formItem.appendChild(formCheck);
+        });
+        
+        container.appendChild(formItem);
+      });
+    }
+    
+    // Envia os dados de verificação para o servidor
+    function enviarVerificacao(formData) {
+      callAPI('salvarVerificacao', { data: formData })
+        .then(result => {
+          // Esconde o formulário
+          document.getElementById('form-overlay').style.display = 'none';
+          
+          // Mostra mensagem de sucesso
+          showSuccess('Verificação registrada com sucesso!');
+          
+          // Recarrega os dados
+          loadDashboardData();
+        })
+        .catch(error => {
+          showError('Erro ao enviar verificação: ' + error);
+        });
+    }
+    
+    // Atualiza os totais de equipamentos no servidor
+    function atualizarTotaisEquipamentos(totaisPorTipo) {
+      callAPI('atualizarTotaisEquipamentos', { totais: totaisPorTipo })
+        .then(result => {
+          showSuccess('Totais atualizados com sucesso!');
+          loadDashboardData(); // Recarrega os dados
+        })
+        .catch(error => {
+          showError('Erro ao atualizar totais: ' + error);
+        });
+    }
+    
+    // Carrega os totais atuais no formulário
+    function carregarTotaisAtuais() {
+      if (allReports && allReports.length > 0) {
+        document.getElementById('total-poliguindaste').value = findReportValueByType('Poliguindaste', 'total') || 0;
+        document.getElementById('total-vacuo').value = findReportValueByType('Vácuo', 'total') || 0;
+        document.getElementById('total-hipervacuo').value = findReportValueByType('Hipervácuo', 'total') || 0;
+        document.getElementById('total-alta-pressao').value = findReportValueByType('Alta pressão', 'total') || 0;
+        document.getElementById('total-bomba').value = findReportValueByType('Bomba sobre camionete', 'total') || 0;
+        document.getElementById('total-aspirador').value = findReportValueByType('Aspirador', 'total') || 0;
+      }
+    }
+    
+    // Função auxiliar para encontrar o valor do relatório pelo tipo
+    function findReportValueByType(type, property) {
+      const report = allReports.find(r => r.type === type);
+      return report ? report[property] : 0;
+    }
+    
+    // Carrega os dados do servidor
+    function loadDashboardData() {
+      showLoading(true);
+      
+      callAPI('getDashboardData')
+        .then(data => onDataLoaded(data))
+        .catch(error => onDataError(error));
+    }
+    
+    // Quando os dados são carregados com sucesso
+    function onDataLoaded(data) {
+      showLoading(false);
+      
+      // Verifica se há erro nos dados
+      if (data.error) {
+        showError(data.error);
+      }
+      
+      // Armazena os dados globalmente
+      allEquipments = data.equipments || [];
+      allReports = data.reports || [];
+      
+      // Atualiza o resumo
+      updateSummary(data.summary || {});
+      
+      // Preenche as tabelas
+      updateEquipmentsTable();
+      updateReportsSummary();
+      
+      // Carrega os totais atuais no formulário
+      carregarTotaisAtuais();
+    }
+    
+    // Em caso de erro no carregamento
+    function onDataError(error) {
+      showLoading(false);
+      showError(error || 'Erro ao carregar dados');
+    }
+    
+    // Atualiza os cards de resumo
+    function updateSummary(summary) {
+      document.getElementById('total-equipments').textContent = summary.total || 0;
+      document.getElementById('verified-equipments').textContent = summary.verified || 0;
+      document.getElementById('pending-equipments').textContent = summary.pending || 0;
+      document.getElementById('progress-percentage').textContent = (summary.progress || 0).toFixed(1) + '%';
+      document.getElementById('progress-bar').style.width = (summary.progress || 0) + '%';
+      document.getElementById('last-update').textContent = summary.lastUpdate || '—';
+    }
+    
+    // Atualiza o resumo de relatórios no dashboard
+    function updateReportsSummary() {
+      const tbody = document.getElementById('reports-summary-tbody');
+      tbody.innerHTML = '';
+      
+      if (allReports.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = '<td colspan="5" style="text-align: center;">Nenhum relatório encontrado</td>';
+        tbody.appendChild(row);
+        return;
+      }
+      
+      allReports.forEach(report => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${report.type || '-'}</td>
+          <td>${report.total || 0}</td>
+          <td>${report.verified || 0}</td>
+          <td>${report.pending || 0}</td>
+          <td>${(report.progress || 0).toFixed(1)}%</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+    
+    // Atualiza a tabela de equipamentos
+    function updateEquipmentsTable() {
+      const tbody = document.getElementById('equipments-tbody');
+      tbody.innerHTML = '';
+      
+      // Filtra os equipamentos
+      const filteredEquipments = filterEquipments();
+      
+      if (filteredEquipments.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = '<td colspan="5" style="text-align: center;">Nenhum equipamento encontrado</td>';
+        tbody.appendChild(row);
+        return;
+      }
+      
+      // Adiciona cada equipamento na tabela
+      filteredEquipments.forEach(equipment => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${equipment.id || '-'}</td>
+          <td>${equipment.type || '-'}</td>
+          <td><span class="status ${equipment.status === 'Verificado' ? 'status-verified' : 'status-pending'}">${equipment.status || '-'}</span></td>
+          <td>${equipment.lastCheck || '-'}</td>
+          <td>${equipment.responsible || '-'}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+    
+    // Filtra os equipamentos com base no filtro atual e termo de busca
+    function filterEquipments() {
+      return allEquipments.filter(equipment => {
+        // Aplica o filtro de tipo
+        if (currentFilter !== 'all') {
+          const filterMapping = {
+            'poliguindaste': 'Poliguindaste',
+            'vacuo': 'Vácuo',
+            'hipervacuo': 'Hipervácuo',
+            'alta-pressao': 'Alta pressão',
+            'bomba': 'Bomba sobre camionete',
+            'aspirador': 'Aspirador'
+          };
+          
+          if (equipment.type !== filterMapping[currentFilter]) {
+            return false;
+          }
+        }
+        
+        // Aplica o termo de busca
+        if (searchTerm) {
+          const searchLower = searchTerm.toLowerCase();
+          return (equipment.id && equipment.id.toLowerCase().includes(searchLower)) || 
+                 (equipment.responsible && equipment.responsible.toLowerCase().includes(searchLower));
+        }
+        
+        return true;
+      });
+    }
+    
+    // Exporta os dados
+    function exportData(format) {
+      callAPI('exportData', { format: format })
+        .then(url => {
+          if (url) {
+            window.open(url, '_blank');
+          } else {
+            showError('Erro ao gerar a exportação');
+          }
+        })
+        .catch(error => {
+          showError('Erro ao exportar: ' + error);
+        });
+    }
+    
+    // Mostra/esconde indicadores de carregamento
+    function showLoading(show) {
+      const loadingElements = document.querySelectorAll('.loading');
+      loadingElements.forEach(el => {
+        el.style.display = show ? 'block' : 'none';
+      });
+      
+      // Esconde as tabelas durante o carregamento
+      if (show) {
+        document.getElementById('equipments-table').style.display = 'none';
+        document.getElementById('reports-summary-table').style.display = 'none';
+      } else {
+        document.getElementById('equipments-table').style.display = 'table';
+        document.getElementById('reports-summary-table').style.display = 'table';
+      }
+    }
+    
+    // Mostra mensagem de erro
+    function showError(message) {
+      const errorElement = document.getElementById('error-message');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      // Esconde a mensagem após 5 segundos
+      setTimeout(function() {
+        errorElement.style.display = 'none';
+      }, 5000);
+    }
+    
+    // Mostra mensagem de sucesso
+    function showSuccess(message) {
+      const successElement = document.getElementById('success-message');
+      successElement.textContent = message;
+      successElement.style.display = 'block';
+      
+      // Esconde a mensagem após 5 segundos
+      setTimeout(function() {
+        successElement.style.display = 'none';
+      }, 5000);
+    }
+  </script>
 </body>
 </html>
