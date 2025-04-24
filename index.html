@@ -695,51 +695,77 @@
     let searchTerm = '';
     let verificacaoItens = []; // Será carregado do servidor
     
-    // Substitua sua função callAPI por esta no arquivo index.html
-    async function callAPI(action, data = {}) {
-      try {
-        const payload = {
-          action: action,
-          ...data
-        };
-        
-        // URL da API (atualize para o novo URL após reimplantar)
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwX82zMDrpx0J8-8zLK-z_rT75jjq9B26f1H96ikkleLim701b5YDUxU3Ed-U283UI/exec';
-        
-        // Criar URL com parâmetros para uma solicitação GET
-        const url = new URL(API_URL);
-        url.searchParams.append('action', action);
-        url.searchParams.append('data', JSON.stringify(data));
-        
-        // Usar um JSONP-like approach com callback
-        return new Promise((resolve, reject) => {
+    // Função melhorada para chamar a API via JSONP
+    function callAPI(action, data = {}) {
+      return new Promise((resolve, reject) => {
+        try {
+          // URL da API (seu URL de implementação do Apps Script)
+          const API_URL = 'https://script.google.com/macros/s/AKfycbxbbg64fSD0lsaGaHa4y83w_Yx8Difen_X1VoL2MPyWco0Oe_0JoXoRXZJE4Tjgz3bm/exec';
+          
           // Nome único para a função de callback
-          const callbackName = 'jsonpCallback_' + Date.now();
+          const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
           
           // Criar uma função global que será chamada pelo script
           window[callbackName] = function(response) {
-            // Limpar após a execução
-            document.body.removeChild(script);
+            // Remover o script após execução
+            if (script && script.parentNode) {
+              script.parentNode.removeChild(script);
+            }
+            
+            // Limpar o callback global
             delete window[callbackName];
+            
+            // Resolver a promessa com os dados
             resolve(response);
           };
           
-          // Criar o elemento script
+          // Converter dados para string
+          const dataStr = JSON.stringify(data);
+          
+          // Construir URL com parâmetros
+          const url = `${API_URL}?action=${action}&data=${encodeURIComponent(dataStr)}&callback=${callbackName}&nocache=${Date.now()}`;
+          
+          // Criar elemento de script
           const script = document.createElement('script');
-          script.src = `${url.toString()}&callback=${callbackName}`;
+          script.src = url;
+          
+          // Lidar com erros
           script.onerror = () => {
-            document.body.removeChild(script);
+            // Remover o script
+            if (script.parentNode) {
+              script.parentNode.removeChild(script);
+            }
+            
+            // Limpar o callback
             delete window[callbackName];
+            
+            // Rejeitar a promessa
             reject(new Error('Falha na requisição JSONP'));
           };
           
-          // Adicionar o script à página para iniciar a solicitação
+          // Definir um timeout para evitar solicitações penduradas
+          const timeoutId = setTimeout(() => {
+            if (script.parentNode) {
+              script.parentNode.removeChild(script);
+            }
+            delete window[callbackName];
+            reject(new Error('Timeout na requisição JSONP'));
+          }, 30000); // 30 segundos
+          
+          // Substituir o handler de sucesso para limpar o timeout
+          const originalCallback = window[callbackName];
+          window[callbackName] = function(response) {
+            clearTimeout(timeoutId);
+            originalCallback(response);
+          };
+          
+          // Adicionar o script ao documento para iniciar a solicitação
           document.body.appendChild(script);
-        });
-      } catch (error) {
-        console.error(`Erro na chamada API (${action}):`, error);
-        throw error;
-      }
+          
+        } catch (error) {
+          reject(error);
+        }
+      });
     }
         
     // Função que será executada quando a página carregar
