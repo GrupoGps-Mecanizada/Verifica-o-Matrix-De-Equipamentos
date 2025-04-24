@@ -1161,13 +1161,16 @@
       }
       
       allReports.forEach(report => {
+        // Calcula a porcentagem corretamente
+        const percentageValue = report.total > 0 ? (report.verified / report.total) * 100 : 0;
+        
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${report.type || '-'}</td>
           <td>${report.total || 0}</td>
           <td>${report.verified || 0}</td>
           <td>${report.pending || 0}</td>
-          <td>${(report.progress || 0).toFixed(1)}%</td>
+          <td>${percentageValue.toFixed(1)}%</td>
         `;
         tbody.appendChild(row);
       });
