@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sistema de Verificação de Equipamentos - GrupoGps - Mecanizada</title>
+  <!-- Adicionando favicon vazio para evitar erro 404 -->
+  <link rel="icon" href="data:,">
   
   <!-- Estilo CSS -->
   <style>
@@ -379,39 +381,76 @@
       margin-top: 3px;
     }
     
-    /* Responsividade para tabelas em dispositivos móveis */
-    @media (max-width: 600px) {
-      .responsive-table {
-        display: block;
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+    /* Melhorias responsivas para todos os dispositivos */
+    @media (max-width: 767px) {
+      .container {
+        padding: 5px;
+      }
+      
+      .summary-cards {
+        flex-direction: column;
       }
       
       .card {
         flex: 1 1 100%;
+        margin-bottom: 10px;
       }
       
       .header h1 {
-        font-size: 18px;
+        font-size: 16px;
+      }
+      
+      .header p {
+        font-size: 12px;
+      }
+      
+      #form-container {
+        width: 95% !important;
+        max-height: 80vh !important;
+      }
+      
+      th, td {
+        padding: 4px;
+        font-size: 12px;
       }
       
       .btn {
         padding: 10px;
-        font-size: 16px;
+        margin: 5px 0;
       }
       
-      th, td {
-        padding: 6px;
-        font-size: 12px;
+      .tabs {
+        flex-wrap: wrap;
       }
       
-      .form-group label, .form-control {
-        font-size: 16px;
+      .tab {
+        flex: 1 1 auto;
+        text-align: center;
+        padding: 8px 5px;
+        font-size: 13px;
+      }
+    }
+    
+    /* Para tablets */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .card {
+        flex: 1 1 calc(50% - 10px);
       }
       
-      .form-check label {
-        font-size: 16px;
+      #form-container {
+        width: 70% !important;
+      }
+    }
+    
+    /* Para desktop */
+    @media (min-width: 1024px) {
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .card {
+        flex: 1 1 calc(25% - 15px);
       }
     }
   </style>
@@ -504,7 +543,6 @@
           <div class="filter-item" data-filter="vacuo">Vácuo</div>
           <div class="filter-item" data-filter="hipervacuo">Hipervácuo</div>
           <div class="filter-item" data-filter="alta-pressao">Alta pressão</div>
-          <div class="filter-item" data-filter="bomba">Bomba sobre camionete</div>
           <div class="filter-item" data-filter="aspirador">Aspirador</div>
         </div>
         
@@ -557,11 +595,6 @@
           </div>
           
           <div class="form-group">
-            <label for="total-bomba">Bomba sobre camionete</label>
-            <input type="number" class="form-control" id="total-bomba" min="0" value="0">
-          </div>
-          
-          <div class="form-group">
             <label for="total-aspirador">Aspirador</label>
             <input type="number" class="form-control" id="total-aspirador" min="0" value="0">
           </div>
@@ -600,7 +633,6 @@
                   <option value="Vácuo">Vácuo</option>
                   <option value="Hipervácuo">Hipervácuo</option>
                   <option value="Alta pressão">Alta pressão</option>
-                  <option value="Bomba sobre camionete">Bomba sobre camionete</option>
                   <option value="Aspirador">Aspirador</option>
                 </select>
               </div>
@@ -651,10 +683,10 @@
     </div>
   </div>
   
-  <!-- Script JavaScript modificado para usar APIs em vez de google.script.run -->
+  <!-- Script JavaScript modificado para usar APIs e correto com CORS -->
   <script>
     // Configuração da URL da API (URL do seu Google Script Web App publicado)
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwBPEFi028Hv4K8sMpWWmdQuZwHRmuCtOgVzfJpD7ho76EPMFTdytcNsWIX-a-2Bc30/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxbbg64fSD0lsaGaHa4y83w_Yx8Difen_X1VoL2MPyWco0Oe_0JoXoRXZJE4Tjgz3bm/exec';
     
     // Variáveis globais para armazenar os dados
     let allEquipments = [];
@@ -663,7 +695,7 @@
     let searchTerm = '';
     let verificacaoItens = []; // Será carregado do servidor
     
-    // Chamada de API genérica
+    // Chamada de API genérica com modo no-cors para evitar problemas de CORS
     async function callAPI(action, data = {}) {
       try {
         const payload = {
@@ -677,6 +709,7 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payload),
+          mode: 'cors' // Usar CORS quando o servidor está configurado corretamente
         });
         
         if (!response.ok) {
@@ -756,17 +789,37 @@
         document.getElementById('form-step-1').style.display = 'block';
         document.getElementById('form-step-2').style.display = 'none';
         document.getElementById('verification-form').reset();
+        
+        // Garantir que o dropdown não está bloqueado ao abrir novo form
+        document.getElementById('equipment-type').disabled = false;
+        const warning = document.getElementById('form-locked-warning');
+        if (warning) warning.remove();
       });
       
       // Cancelar formulário
       document.getElementById('cancel-form').addEventListener('click', function() {
+        // Habilitar o dropdown
+        document.getElementById('equipment-type').disabled = false;
+        
+        // Remover aviso de travamento
+        const warning = document.getElementById('form-locked-warning');
+        if (warning) warning.remove();
+        
+        // Fechar formulário
         document.getElementById('form-overlay').style.display = 'none';
+        
+        // Resetar formulário
+        document.getElementById('verification-form').reset();
       });
       
-      // Fechar formulário clicando fora dele
+      // Fechar formulário clicando fora dele - modificado para evitar saídas acidentais
       document.getElementById('form-overlay').addEventListener('click', function(e) {
-        if (e.target === this) {
+        // Fechar somente se clicar no fundo e se o tipo de equipamento não estiver travado
+        if (e.target === this && !document.getElementById('equipment-type').disabled) {
           this.style.display = 'none';
+        } else if (e.target === this) {
+          // Se tentar fechar com tipo selecionado, mostrar aviso
+          showError('Você deve concluir ou cancelar o registro antes de fechar');
         }
       });
       
@@ -793,40 +846,23 @@
         document.getElementById('form-step-2').style.display = 'none';
       });
       
-      // Mudança no tipo de equipamento
+      // Mudança no tipo de equipamento - Melhorado para evitar mudanças acidentais
       document.getElementById('equipment-type').addEventListener('change', function() {
         if (this.value) {
-          // Trava o campo após seleção
+          // Travar o dropdown
           this.disabled = true;
           
-          // Cria botão para desbloquear se necessário
-          const parentElement = this.parentElement;
-          if (!document.getElementById('unlock-select')) {
-            const unlockButton = document.createElement('button');
-            unlockButton.id = 'unlock-select';
-            unlockButton.type = 'button';
-            unlockButton.className = 'btn btn-sm';
-            unlockButton.textContent = 'Desbloquear';
-            unlockButton.style.marginLeft = '10px';
-            unlockButton.style.fontSize = '12px';
-            
-            unlockButton.addEventListener('click', function() {
-              document.getElementById('equipment-type').disabled = false;
-              this.remove();
-            });
-            
-            parentElement.appendChild(unlockButton);
-          }
+          // Adicionar aviso visual
+          const warningText = document.createElement('div');
+          warningText.id = 'form-locked-warning';
+          warningText.style.color = '#dc3545';
+          warningText.style.fontSize = '12px';
+          warningText.style.marginTop = '5px';
+          warningText.textContent = 'Formulário travado. Conclua a verificação ou use Cancelar para sair.';
+          this.parentElement.appendChild(warningText);
           
           gerarItensVerificacao(this.value);
         }
-      });
-      
-      // Adiciona evento para resetar o travamento quando o formulário é fechado
-      document.getElementById('cancel-form').addEventListener('click', function() {
-        document.getElementById('equipment-type').disabled = false;
-        const unlockButton = document.getElementById('unlock-select');
-        if (unlockButton) unlockButton.remove();
       });
       
       // Envio do formulário
@@ -854,6 +890,8 @@
           const radioButtons = document.querySelectorAll(`input[name="${item.id}"]:checked`);
           if (radioButtons.length === 0) {
             showError(`Por favor, responda todos os itens de verificação.`);
+            // Reativando o bloqueio do select já que o form não foi enviado
+            document.getElementById('equipment-type').disabled = true;
             return;
           }
           formData.items[item.id] = document.querySelector(`input[name="${item.id}"]:checked`).value;
@@ -867,12 +905,12 @@
       document.getElementById('totals-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
+        // Removido "Bomba sobre camionete" da lista
         const totaisPorTipo = {
           'Poliguindaste': Number(document.getElementById('total-poliguindaste').value) || 0,
           'Vácuo': Number(document.getElementById('total-vacuo').value) || 0,
           'Hipervácuo': Number(document.getElementById('total-hipervacuo').value) || 0,
           'Alta pressão': Number(document.getElementById('total-alta-pressao').value) || 0,
-          'Bomba sobre camionete': Number(document.getElementById('total-bomba').value) || 0,
           'Aspirador': Number(document.getElementById('total-aspirador').value) || 0
         };
         
@@ -982,6 +1020,8 @@
         })
         .catch(error => {
           showError('Erro ao enviar verificação: ' + error);
+          // Como houve erro, reativar o bloqueio do dropdown
+          document.getElementById('equipment-type').disabled = true;
         });
     }
     
@@ -1004,7 +1044,6 @@
         document.getElementById('total-vacuo').value = findReportValueByType('Vácuo', 'total') || 0;
         document.getElementById('total-hipervacuo').value = findReportValueByType('Hipervácuo', 'total') || 0;
         document.getElementById('total-alta-pressao').value = findReportValueByType('Alta pressão', 'total') || 0;
-        document.getElementById('total-bomba').value = findReportValueByType('Bomba sobre camionete', 'total') || 0;
         document.getElementById('total-aspirador').value = findReportValueByType('Aspirador', 'total') || 0;
       }
     }
@@ -1128,7 +1167,6 @@
             'vacuo': 'Vácuo',
             'hipervacuo': 'Hipervácuo',
             'alta-pressao': 'Alta pressão',
-            'bomba': 'Bomba sobre camionete',
             'aspirador': 'Aspirador'
           };
           
