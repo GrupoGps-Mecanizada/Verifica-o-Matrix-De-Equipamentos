@@ -1,0 +1,407 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.header {
+  background-color: #0056b3;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 15px;
+}
+
+.header h1 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.header p {
+  font-size: 14px;
+  margin: 5px 0 0;
+}
+
+.company-branding {
+  margin-bottom: 5px;
+}
+
+.company-branding span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.summary-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 15px;
+  flex: 1 1 calc(50% - 10px);
+  min-width: 140px;
+}
+
+.card-title {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.card-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0056b3;
+}
+
+.progress-value {
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar {
+  flex-grow: 1;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-right: 8px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #28a745;
+  width: 0%;
+}
+
+.section {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.section-title {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th {
+  background-color: #f5f5f5;
+  text-align: left;
+  padding: 8px;
+  border-bottom: 2px solid #ddd;
+  color: #333;
+}
+
+td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+.status {
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-verified {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.search-container {
+  margin-bottom: 15px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.filter-container {
+  display: flex;
+  margin-bottom: 15px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+}
+
+.filter-container::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-item {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 5px 10px;
+  margin-right: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.filter-item.active {
+  background-color: #0056b3;
+  color: white;
+  border-color: #0056b3;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.tab.active {
+  border-bottom: 2px solid #0056b3;
+  color: #0056b3;
+  font-weight: bold;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.footer {
+  text-align: center;
+  padding: 10px;
+  color: #777;
+  font-size: 12px;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #0056b3;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin: 5px 0;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: #003d7a;
+}
+
+.btn-success {
+  background-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-full {
+  display: block;
+  width: 100%;
+}
+
+.btn-new {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #28a745;
+  color: white;
+  text-align: center;
+  line-height: 56px;
+  font-size: 24px;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  display: none;
+  font-size: 14px;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  display: none;
+  font-size: 14px;
+}
+
+.loading {
+  text-align: center;
+  padding: 15px;
+  font-style: italic;
+  color: #777;
+  font-size: 14px;
+}
+
+/* Estilos específicos para o formulário */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.form-check label {
+  margin: 0 0 0 5px;
+  font-weight: normal;
+}
+
+.form-steps-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.form-steps {
+  margin-bottom: 10px;
+}
+
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.form-required {
+  color: #dc3545;
+  margin-left: 2px;
+}
+
+.form-item {
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.form-item-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.developer-credit {
+  font-size: 10px;
+  color: #999;
+  margin-top: 3px;
+}
+
+/* Responsividade para tabelas em dispositivos móveis */
+@media (max-width: 600px) {
+  .responsive-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .card {
+    flex: 1 1 100%;
+  }
+  
+  .header h1 {
+    font-size: 18px;
+  }
+  
+  .btn {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  th, td {
+    padding: 6px;
+    font-size: 12px;
+  }
+  
+  .form-group label, .form-control {
+    font-size: 16px;
+  }
+  
+  .form-check label {
+    font-size: 16px;
+  }
+}
