@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistema de Verificação de Equipamentos - GrupoGps - Mecanizada</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="company-branding">
+        <span>GrupoGps - Mecanizada</span>
+      </div>
+      <h1>Sistema de Verificação de Equipamentos</h1>
+      <p>Controle e monitoramento da frota</p>
+    </div>
+    
+    <div class="error-message" id="error-message"></div>
+    <div class="success-message" id="success-message"></div>
+    
+    <!-- Tabs de navegação -->
+    <div class="tabs">
+      <div class="tab active" data-tab="dashboard">Dashboard</div>
+      <div class="tab" data-tab="equipments">Equipamentos</div>
+      <div class="tab" data-tab="reports">Relatórios</div>
+    </div>
+    
+    <!-- Dashboard Tab -->
+    <div class="tab-content active" id="tab-dashboard">
+      <!-- Resumo em cards -->
+      <div class="summary-cards">
+        <div class="card">
+          <div class="card-title">Total de Equipamentos</div>
+          <div class="card-value" id="total-equipments">-</div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Verificados</div>
+          <div class="card-value" id="verified-equipments">-</div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Pendentes</div>
+          <div class="card-value" id="pending-equipments">-</div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Progresso Geral</div>
+          <div class="progress-value">
+            <div class="progress-bar">
+              <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+            </div>
+            <span class="card-value" id="progress-percentage">-</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Resumo por tipo de equipamento -->
+      <div class="section">
+        <h2 class="section-title">Progresso por Tipo</h2>
+        <div id="loading-reports-summary" class="loading">Carregando dados...</div>
+        <div class="responsive-table">
+          <table id="reports-summary-table">
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Total</th>
+                <th>Verificados</th>
+                <th>Pendentes</th>
+                <th>% Concluído</th>
+              </tr>
+            </thead>
+            <tbody id="reports-summary-tbody">
+              <!-- Dados serão preenchidos via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Conteúdo da tab Equipamentos -->
+    <div class="tab-content" id="tab-equipments">
+      <div class="section">
+        <!-- Seção de busca e filtros -->
+        <div class="search-container">
+          <input type="text" class="search-input" id="search-input" placeholder="Buscar por ID/Placa ou Responsável...">
+        </div>
+        
+        <div class="filter-container">
+          <div class="filter-item active" data-filter="all">Todos</div>
+          <div class="filter-item" data-filter="poliguindaste">Poliguindaste</div>
+          <div class="filter-item" data-filter="vacuo">Vácuo</div>
+          <div class="filter-item" data-filter="hipervacuo">Hipervácuo</div>
+          <div class="filter-item" data-filter="alta-pressao">Alta pressão</div>
+          <div class="filter-item" data-filter="bomba">Bomba sobre camionete</div>
+          <div class="filter-item" data-filter="aspirador">Aspirador</div>
+        </div>
+        
+        <h2 class="section-title">Lista de Equipamentos</h2>
+        <div id="loading-equipments" class="loading">Carregando dados...</div>
+        <div class="responsive-table">
+          <table id="equipments-table">
+            <thead>
+              <tr>
+                <th>ID/Placa</th>
+                <th>Tipo</th>
+                <th>Status</th>
+                <th>Última Verificação</th>
+                <th>Responsável</th>
+              </tr>
+            </thead>
+            <tbody id="equipments-tbody">
+              <!-- Dados serão preenchidos via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Conteúdo da tab Relatórios -->
+    <div class="tab-content" id="tab-reports">
+      <div class="section">
+        <h2 class="section-title">Exportar Relatórios</h2>
+        <p style="font-size: 14px;">Baixe os dados para análise detalhada.</p>
+        <button id="export-excel" class="btn btn-full">Exportar para Excel</button>
+        <button id="export-pdf" class="btn btn-full" style="margin-top: 10px;">Exportar para PDF</button>
+      </div>
+    </div>
+    
+    <!-- Formulário de Verificação (Aparece somente quando o botão "Novo" é clicado) -->
+    <div id="form-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000;">
+      <div id="form-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+        <h2 style="margin-top: 0;">Nova Verificação</h2>
+        
+        <form id="verification-form">
+          <div class="form-steps-container">
+            <!-- Etapa 1: Identificação do Equipamento -->
+            <div class="form-steps" id="form-step-1">
+              <div class="form-group">
+                <label for="equipment-id">ID/Placa do Equipamento<span class="form-required">*</span></label>
+                <input type="text" class="form-control" id="equipment-id" name="equipment-id" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="equipment-type">Tipo de Equipamento<span class="form-required">*</span></label>
+                <select class="form-control" id="equipment-type" name="equipment-type" required>
+                  <option value="">Selecione o tipo</option>
+                  <option value="Poliguindaste">Poliguindaste</option>
+                  <option value="Vácuo">Vácuo</option>
+                  <option value="Hipervácuo">Hipervácuo</option>
+                  <option value="Alta pressão">Alta pressão</option>
+                  <option value="Bomba sobre camionete">Bomba sobre camionete</option>
+                  <option value="Aspirador">Aspirador</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="responsible-name">Nome do Responsável<span class="form-required">*</span></label>
+                <input type="text" class="form-control" id="responsible-name" name="responsible-name" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="verification-date">Data da Verificação<span class="form-required">*</span></label>
+                <input type="date" class="form-control" id="verification-date" name="verification-date" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="observations">Observações</label>
+                <textarea class="form-control" id="observations" name="observations" rows="3"></textarea>
+              </div>
+              
+              <div class="form-navigation">
+                <button type="button" class="btn" id="cancel-form">Cancelar</button>
+                <button type="button" class="btn btn-success" id="next-step-1">Próximo</button>
+              </div>
+            </div>
+            
+            <!-- Etapa 2: Verificação dos Itens -->
+            <div class="form-steps" id="form-step-2" style="display: none;">
+              <div id="dynamic-verification-items">
+                <!-- Itens serão gerados dinamicamente com base no tipo de equipamento -->
+              </div>
+              
+              <div class="form-navigation">
+                <button type="button" class="btn" id="prev-step-2">Voltar</button>
+                <button type="submit" class="btn btn-success" id="submit-form">Salvar</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Botão de Novo Registro -->
+    <div class="btn-new" id="new-verification">+</div>
+    
+    <div class="footer">
+      <p>Sistema de Verificação de Equipamentos © 2025 | Última atualização: <span id="last-update">-</span></p>
+      <p class="developer-credit">&lt;/&gt; Desenvolvido por Warlison Abreu</p>
+    </div>
+  </div>
+  
+  <!-- Importar JavaScript -->
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
