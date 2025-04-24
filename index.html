@@ -695,7 +695,7 @@
     let searchTerm = '';
     let verificacaoItens = []; // Será carregado do servidor
     
-    // Chamada de API genérica com modo no-cors para evitar problemas de CORS
+    // Substitua sua função callAPI por esta no arquivo index.html
     async function callAPI(action, data = {}) {
       try {
         const payload = {
@@ -703,26 +703,45 @@
           ...data
         };
         
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-          mode: 'cors' // Usar CORS quando o servidor está configurado corretamente
+        // URL da API (atualize para o novo URL após reimplantar)
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwX82zMDrpx0J8-8zLK-z_rT75jjq9B26f1H96ikkleLim701b5YDUxU3Ed-U283UI/exec';
+        
+        // Criar URL com parâmetros para uma solicitação GET
+        const url = new URL(API_URL);
+        url.searchParams.append('action', action);
+        url.searchParams.append('data', JSON.stringify(data));
+        
+        // Usar um JSONP-like approach com callback
+        return new Promise((resolve, reject) => {
+          // Nome único para a função de callback
+          const callbackName = 'jsonpCallback_' + Date.now();
+          
+          // Criar uma função global que será chamada pelo script
+          window[callbackName] = function(response) {
+            // Limpar após a execução
+            document.body.removeChild(script);
+            delete window[callbackName];
+            resolve(response);
+          };
+          
+          // Criar o elemento script
+          const script = document.createElement('script');
+          script.src = `${url.toString()}&callback=${callbackName}`;
+          script.onerror = () => {
+            document.body.removeChild(script);
+            delete window[callbackName];
+            reject(new Error('Falha na requisição JSONP'));
+          };
+          
+          // Adicionar o script à página para iniciar a solicitação
+          document.body.appendChild(script);
         });
-        
-        if (!response.ok) {
-          throw new Error(`API respondeu com status ${response.status}`);
-        }
-        
-        return await response.json();
       } catch (error) {
         console.error(`Erro na chamada API (${action}):`, error);
         throw error;
       }
     }
-    
+        
     // Função que será executada quando a página carregar
     document.addEventListener('DOMContentLoaded', function() {
       // Carregar itens de verificação do servidor
