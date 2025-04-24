@@ -1,0 +1,1 @@
+# Verifica-o-Matrix-De-Equipamentos
